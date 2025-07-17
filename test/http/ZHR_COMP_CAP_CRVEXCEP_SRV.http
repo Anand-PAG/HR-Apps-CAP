@@ -1,0 +1,24 @@
+@svc = http://localhost:4004/odata/v4/zhr-comp-cap-crvexcep-srv
+@default_headers=Content-Type: application/json
+
+## ZHR_COMP_CAP_CRVEXCEP_SRV
+GET {{svc}}/$metadata
+
+### ## THRSHLD Get
+GET {{svc}}/THRSHLD
+
+### ## ZHR_COMP_CAP_CRVEXCEP_SRV Draft POST
+POST {{svc}}/THRSHLD
+Content-Type: application/json
+
+{
+    "Year" : "2025",
+    "PerformanceSubZone" : "123",
+    "Payzones" : "234",
+    "CompaRatioRanges" : "12345",
+    "StartRange" : "1",
+    "EndRange" : "3",
+    "PerformanceRating" : "123",
+    "Sequence" : "123",
+    "FieldUsage" : "12"
+}

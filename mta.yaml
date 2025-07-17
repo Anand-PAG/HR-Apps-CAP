@@ -1,0 +1,104 @@
+_schema-version: 3.3.0
+ID: ZHR_COMPMODEL_CAP
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+modules:
+  - name: ZHR_COMPMODEL_CAP-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: ZHR_COMPMODEL_CAP-db
+      - name: ZHR_COMPMODEL_CAP-auth
+      - name: ZHR_COMPMODEL_CAP-destination-service
+
+  - name: ZHR_COMPMODEL_CAP-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: ZHR_COMPMODEL_CAP-db
+  
+  - name: ZHR_COMPMODEL_CAP-destination-content
+    type: com.sap.application.content
+    requires:
+    - name: ZHR_COMPMODEL_CAP-destination-service
+      parameters:
+        content-target: true
+    - name: ZHR_COMPMODEL_CAP-auth
+      parameters:
+        service-key:
+          name: ZHR_COMPMODEL_CAP-auth-key
+    parameters:
+      content:
+        instance:
+          destinations:
+          - Authentication: OAuth2UserTokenExchange
+            Name: ZHR_COMPMODEL_CAP_ZHR_COMPMODEL_CAP_auth
+            ServiceInstanceName: ZHR_COMPMODEL_CAP-xsuaa-srv
+            ServiceKeyName: ZHR_COMPMODEL_CAP-auth-key
+            sap.cloud.service: ZHR_COMPMODEL_CAP
+          existing_destinations_policy: ignore
+    build-parameters:
+      no-source: true
+
+resources:
+  - name: ZHR_COMPMODEL_CAP-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: ZHR_COMPMODEL_CAP-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+            - Authentication: NoAuthentication
+              Name: ui5
+              ProxyType: Internet
+              Type: HTTP
+              URL: https://ui5.sap.com
+            - Authentication: NoAuthentication
+              HTML5.DynamicDestination: true
+              HTML5.ForwardAuthToken: true
+              Name: ZHR_COMPMODEL_CAP-srv-api
+              ProxyType: Internet
+              Type: HTTP
+              URL: ~{srv-api/srv-url}
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: ZHR_COMPMODEL_CAP-destination-service
+      service-plan: lite
+    requires:
+    - name: srv-api
+  - name: ZHR_COMPMODEL_CAP-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-name: ZHR_COMPMODEL_CAP-xsuaa-srv
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: ZHR_COMPMODEL_CAP-xsuaa
+        tenant-mode: dedicated
