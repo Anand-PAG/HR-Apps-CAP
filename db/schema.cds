@@ -405,7 +405,6 @@ entity ZHR_COMP_TBL_CRV_MODEL_THRSHLD_ITEM : cuid, managed {
 }
 
 // Model Master Table
-
 entity ZHR_COMP_TBL_MODEL_MASTER : cuid, managed {
     key year                 : Integer;
     key model_Id             : String;
