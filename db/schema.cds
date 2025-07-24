@@ -13,7 +13,7 @@ entity ZHR_COMP_TBL_THRSHLD_MASTER : cuid, managed {
         ];
         performanceSubZone : String(10);
         payzones           : String(10);
-        compaRatioRanges   : String(20);
+    key compaRatioRanges   : String(20);
         startRange         : String(3) @assert.format: '^[0-9]{1,3}$';
         endRange           : String(3) @assert.format: '^[0-9]{1,3}$';
         performanceRating  : String(20);
@@ -23,9 +23,9 @@ entity ZHR_COMP_TBL_THRSHLD_MASTER : cuid, managed {
 
 // SubZone Master Table
 entity ZHR_COMP_TBL_SUBZONE_MASTER : cuid, managed {
-    performanceSubZone : String;
-    sequence           : Integer;
-    fieldUsage         : String;
+    key performanceSubZone : String;
+        sequence           : Integer;
+        fieldUsage         : String;
 }
 
 // Comp Master Table
@@ -34,9 +34,9 @@ entity ZHR_COMP_TBL_COMPRATIO_MASTER : cuid, managed {
             1000,
             9999
         ];
-        performanceSubZone : String;
-        payzones           : String;
-        compaRatioRanges   : String;
+    key performanceSubZone : String;
+    key payzones           : String;
+    key compaRatioRanges   : String;
         startRange         : Integer;
         endRange           : Integer;
         performanceRating  : String;
@@ -46,39 +46,69 @@ entity ZHR_COMP_TBL_COMPRATIO_MASTER : cuid, managed {
 
 // CRV Exception Master Table
 entity ZHR_COMP_TBL_CRV_EXPTN_MASTER : cuid, managed {
-    key field_id                 : String;
-    key custPERNR                : Integer;
-        executiveRuleViolation   : String(1);
-        mgrFirstName             : String(60);
-        mgrLastName              : String(60);
-        userName                 : String;
-        custHireDate             : Date;
-        custBusUnit              : String;
-        custDivision             : String;
-        custDepartment           : String;
-        jobTitle                 : String;
-        custPayGradeLevel        : Integer;
-        curSalary                : Decimal;
-        custCurHrlySalary        : Decimal;
-        payGuideMid              : Decimal;
-        curRatio                 : Integer;
-        custPerformanceZone      : String;
-        custPDScore              : String;
-        meritGuideline           : Decimal;
-        merit                    : Decimal;
-        merit_Percentage         : Integer;
-        Comment_merit            : String;
-        custExceptionCode        : String;
-        lumpSum                  : Decimal;
-        lumpSum_Percentage       : Integer;
-        finSalary                : Decimal;
-        compaRatio               : Integer;
-        custMeritExcepReqAmt     : Decimal;
-        custMeritExcepReqPct     : Integer;
-        custfinSalaryExcepReq    : Decimal;
-        custCompaRatioExcepReq   : Integer;
-        custMeritExcepReqComment : String;
-        salaryNote               : String;
+    key field_id                  : String;
+    key peronalNo                 : Integer;
+        executiveRuleViolation    : String(1);
+        mgrFirstName              : String(60);
+        mgrLastName               : String(60);
+        empName                   : String;
+        hireDate                  : Date;
+        businessUnit              : String;
+        division                  : String;
+        department                : String;
+        job                    : String;
+        jobTitle                  : String;
+        payGrade                  : Integer;
+        annualSalary              : Decimal(20,2);
+        hourlySalary              : Decimal(20,2);
+        midPoint                  : Decimal(20,2);
+        compRatio                 : Integer;
+        compRatio120              : Integer;
+        performanceZone           : String;
+        performanceSubZone        : String;
+        PDPScore                  : String;
+        meritGuideline            : Decimal(20,2);
+        withinGuideline            : Decimal(20,2);
+        merit                     : Decimal(20,2);
+        merit_Percentage          : Decimal(4,2);
+        commentMerit              : String;
+        exceptionCode             : String;
+        lumpSum                   : Decimal(20,2);
+        lumpSum_Percentage        : Decimal(4,2);
+        finalPay                  : Decimal(20,2);
+        exceptionMerit            : Decimal(20,2);
+        exceptionMerit_Percentage : Decimal(4,2);
+        exceptionSalary           : Decimal(20,2);
+        commentMeritException     : String;
+        model_Percentage :   Decimal(4,2);
+        modelAmount :   Decimal(20,2);
+        newModelAnnual  : Decimal(20,2);
+        hourlyRate : Decimal(20,2);
+        annualRate : Decimal(20,2);
+        newCompRatio_Percentage: Decimal(4,2);
+        exceptionCompRatio : Integer;
+        notes: String;
+        basePayAdj: Decimal(20,2);
+        basePayAdj_Percentage: Decimal(4,2);
+        commentMeritPlanned: String;
+        planned: Decimal(4,2);
+        exceptionComment : String;
+        min: String;
+        max:String;
+        budget: String;
+        crChange: String;
+        flags: String;
+        companyCode: String;
+        division_SAP: String;
+        grade_Standrad:String;
+        meritModel: Decimal(20,2);
+        meritModel_Percentage:Decimal(4,2);
+        meritPlanned_Percentage:Decimal(4,2);
+        publishToEC:String;
+        newHourlyRate:Decimal(20,2);
+        generateStatement:String;
+        employmentStatus:String;
+
 }
 
 // BU Div Master Table
@@ -348,7 +378,7 @@ entity ZHR_COMP_TBL_STIP_MERITMASTER : cuid, managed {
 }
 
 // CRV Model Header Table
-entity ZHR_COMP_TBL_CRV_MODEL_HEADER : cuid, managed {
+entity ZHR_COMP_TBL_CRV_MODEL_HEADER : managed {
     key year                        : Integer;
     key model_Id                    : String;
     key modelOption                 : String;
@@ -376,7 +406,7 @@ entity ZHR_COMP_TBL_CRV_MODEL_HEADER : cuid, managed {
 }
 
 // CRV Model Threshold Table
-entity ZHR_COMP_TBL_CRV_MODEL_THRSHLD_HEADER : cuid, managed {
+entity ZHR_COMP_TBL_CRV_MODEL_THRSHLD_HEADER : managed {
     key year                   : Integer;
     key model_Id               : String;
     key modelOption            : String;
@@ -391,23 +421,39 @@ entity ZHR_COMP_TBL_CRV_MODEL_THRSHLD_HEADER : cuid, managed {
 }
 
 // Dynamic Column Value Table
-entity ZHR_COMP_TBL_CRV_MODEL_THRSHLD_ITEM : cuid, managed {
-    key year                   : Integer;
-    key model_Id               : String;
-    key modelOption            : String;
-    key targetTab              : String;
-    key custPerformancesubZone : Integer;
-    key payzones               : String;
-    key custPDScore            : String;
-    key threshold_Id           : UUID;
-        value                  : Integer;
-        fieldUsage             : String;
+entity ZHR_COMP_TBL_CRV_MODEL_THRSHLD_ITEM : managed {
+    key year                      : Integer;
+    key model_Id                  : String;
+    key modelOption               : String;
+    key targetTab                 : String;
+    key custPerformancesubZone    : Integer;
+    key payzones                  : String;
+    key custPDScore               : String;
+    key threshold_Id              : UUID;
+        thresholdDescription      : String;
+        value                     : Integer;
+        thresholdRangeTo          : Integer;
+        thresholdRangeFrom        : Integer;
+        thresholdRangeDescription : String;
+        fieldUsage                : String;
 }
 
 // Model Master Table
 entity ZHR_COMP_TBL_MODEL_MASTER : cuid, managed {
     key year                 : Integer;
     key model_Id             : String;
+    key appType              : String;
+        approved_rejected_by : String;
+        approved_rejected_on : String;
+        published_by         : String;
+        published_on         : String;
+        usage                : String;
+}
+
+// Calibration Master tABLE
+entity ZHR_COMP_TBL_CALIBRATION_MASTER : cuid, managed {
+    key year                 : Integer;
+    key calibration_Id       : String;
     key appType              : String;
         approved_rejected_by : String;
         approved_rejected_on : String;

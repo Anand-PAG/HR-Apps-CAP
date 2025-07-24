@@ -20,4 +20,6 @@ service ZHR_COMP_CAP_CRVEXCEP_SRV {
     entity CRV_MODEL_HEADER as projection on compmodel.ZHR_COMP_TBL_CRV_MODEL_HEADER;
     entity CRV_MODEL_THRSHLD_HEADER as projection on compmodel.ZHR_COMP_TBL_CRV_MODEL_THRSHLD_HEADER;
     entity CRV_MODEL_THRSHLD_ITEM as projection on compmodel.ZHR_COMP_TBL_CRV_MODEL_THRSHLD_ITEM;
+    entity MODEL_MASTER as projection on compmodel.ZHR_COMP_TBL_MODEL_MASTER;
+    entity CALIBRATION_MASTER as projection on compmodel.ZHR_COMP_TBL_CALIBRATION_MASTER;
 }

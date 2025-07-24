@@ -7,18 +7,64 @@ GET {{svc}}/$metadata
 ### ## THRSHLD Get
 GET {{svc}}/THRSHLD
 
-### ## ZHR_COMP_CAP_CRVEXCEP_SRV Draft POST
+### ## ZHR_COMP_CAP_CRVEXCEP_SRV POST
 POST {{svc}}/THRSHLD
 Content-Type: application/json
 
 {
-    "Year" : "2025",
-    "PerformanceSubZone" : "123",
-    "Payzones" : "234",
-    "CompaRatioRanges" : "12345",
-    "StartRange" : "1",
-    "EndRange" : "3",
-    "PerformanceRating" : "123",
-    "Sequence" : "123",
-    "FieldUsage" : "12"
+    "year" : "2025",
+    "performanceSubZone" : "123",
+    "payzones" : "234",
+    "compaRatioRanges" : "12345",
+    "startRange" : "1",
+    "endRange" : "3",
+    "performanceRating" : "123",
+    "sequence" : "123",
+    "fieldUsage" : "12"
+}
+
+### ## ZHR_COMP_TBL_CRV_MODEL_HEADER  POST
+POST {{svc}}/CRV_MODEL_HEADER
+Content-Type: application/json
+
+{
+    "year" : "2025",
+    "model_Id" : "123",
+    "modelOption" : "modelOption",
+    "targetTab" : "targetTab",
+    "totalDistributed" : "1.0",
+    "totalDistrubuted_Percentage" : "3.0",
+    "remainingPool" : "12.0",
+    "remainingPool_Percentage" : "12.0",
+    "remaningPoolStatus" : "poolstatus",
+    "status" : "active",
+    "to_ThresholdHeaders": [
+        {
+            "year" : "2025",
+            "model_Id" : "123",
+            "modelOption" : "modelOption",
+            "targetTab" : "targetTab",
+            "custPerformancesubZone" : "1",
+            "payzones" : "abc",
+            "custPDScore" : "xyz",
+            "count" : "3",
+            "totalBudget" : "12.0",
+            "totalCost" : "13.0",
+            "indicator" : "abc"
+        }
+    ],
+    "to_ThresholdItems": [
+        {
+            "year" : "2025",
+            "model_Id" : "123",
+            "modelOption" : "modelOption",
+            "targetTab" : "targetTab",
+            "custPerformancesubZone" : "1",
+            "payzones" : "abc",
+            "custPDScore" : "xyz",
+            "threshold_Id" : "a7c1f3de-77d6-4c3d-96dc-34e2211d6df2",
+            "value" : "12",
+            "fieldUsage" : "abc"
+        }
+    ]
 }
